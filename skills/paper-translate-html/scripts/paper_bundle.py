@@ -276,6 +276,8 @@ def build(args):
         content += '<a href="中文逐句翻译.md">Markdown 译文</a> · <a href="原文提取.txt">提取原文</a></div></header>'
         content += f'<div class="layout">{nav}<main><section class="intro">{convert(intro)}</section>'
         content += ''.join(articles) + gallery + '</main></div>'
+        question_meta = json.dumps({'id': folder.name, 'source_sha256': info['source_sha256']}, ensure_ascii=False).replace('<', '\\u003c')
+        content += f'<script type="application/json" id="paper-question-meta">{question_meta}</script><script src="../assets/questions.js" defer></script>'
         (folder / '中文阅读版.html').write_text(shell(title, content, '../', True), encoding='utf-8')
         record = {'id': folder.name, 'title': title, 'pages': n_pages, 'figures': len(figures),
                   'extra_crops': len(extra), 'translation_characters': len(text),
